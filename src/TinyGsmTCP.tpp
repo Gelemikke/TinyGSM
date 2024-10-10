@@ -130,8 +130,8 @@ class TinyGsmTCP {
       int fails = 0;
       while(buffer < end){
           const uint8_t* pre_write = buffer;
-          if (end - buffer > MTU()){
-              buffer += TinyGsmClient::write(buffer, MTU());
+          if (end - buffer > TINY_GSM_MTU){
+              buffer += TinyGsmClient::write(buffer, TINY_GSM_MTU);
           }
           else{
               buffer += TinyGsmClient::write(buffer, end - buffer);
