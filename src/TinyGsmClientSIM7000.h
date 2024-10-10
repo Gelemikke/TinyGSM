@@ -14,6 +14,7 @@
 
 #define TINY_GSM_MUX_COUNT 8
 #define TINY_GSM_BUFFER_READ_AND_CHECK_SIZE
+#define TINY_GSM_MTU 1460
 
 #include "TinyGsmClientSIM70xx.h"
 #include "TinyGsmTCP.tpp"

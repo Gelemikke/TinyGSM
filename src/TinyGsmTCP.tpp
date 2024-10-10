@@ -9,6 +9,10 @@
 #ifndef SRC_TINYGSMTCP_H_
 #define SRC_TINYGSMTCP_H_
 
+#ifndef TINY_GSM_MTU
+#define TINY_GSM_MTU 0
+#endif
+
 #include "TinyGsmCommon.h"
 
 #define TINY_GSM_MODEM_HAS_TCP
@@ -113,10 +117,37 @@ class TinyGsmTCP {
     // }
 
     // Writes data out on the client using the modem send functionality
-    size_t write(const uint8_t* buf, size_t size) override {
-      TINY_GSM_YIELD();
-      at->maintain();
-      return at->modemSend(buf, size, mux);
+    // size_t write(const uint8_t* buf, size_t size) override {
+    //   TINY_GSM_YIELD();
+    //   at->maintain();
+    //   return at->modemSend(buf, size, mux);
+    // }
+
+    size_t write(const uint8_t* buffer, size_t size) override {
+      const uint8_t* start = buffer;
+      const uint8_t* end = buffer + size;
+
+      int fails = 0;
+      while(buffer < end){
+          const uint8_t* pre_write = buffer;
+          if (end - buffer > MTU()){
+              buffer += TinyGsmClient::write(buffer, MTU());
+          }
+          else{
+              buffer += TinyGsmClient::write(buffer, end - buffer);
+          }
+          
+          // Keep track if the write succeeded
+          if (pre_write == buffer){
+              fails++;
+          }
+          else{
+              fails = 0;
+          }
+
+          if (fails == 10){break;}
+      }
+        return buffer - start;
     }
 
     size_t write(uint8_t c) override {
