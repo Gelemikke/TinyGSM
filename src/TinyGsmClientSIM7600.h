@@ -14,6 +14,7 @@
 
 #define TINY_GSM_MUX_COUNT 10
 #define TINY_GSM_BUFFER_READ_AND_CHECK_SIZE
+#define TINY_GSM_MTU 1500
 #ifdef AT_NL
 #undef AT_NL
 #endif
