@@ -10,7 +10,7 @@
 #define SRC_TINYGSMTCP_H_
 
 #ifndef TINY_GSM_MTU
-#define TINY_GSM_MTU 0
+#define TINY_GSM_MTU 10000000 //a large number
 #endif
 
 #include "TinyGsmCommon.h"
